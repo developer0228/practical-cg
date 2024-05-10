@@ -1,0 +1,78 @@
+Sure, let's break down the provided code:
+
+```cpp
+#include<windows.h>
+#include <GL/glut.h>
+#include <cmath>
+```
+
+1. These lines include necessary header files for Windows API and OpenGL Utility Toolkit (GLUT), as well as the `<cmath>` library for mathematical functions.
+
+```cpp
+const int WINDOW_WIDTH = 800;
+const int WINDOW_HEIGHT = 600;
+```
+
+2. These lines define constants for the window width and height.
+
+```cpp
+void drawKochCurve(float x1, float y1, float x2, float y2, int depth) {
+    // Function to draw Koch curve
+}
+```
+
+3. This function `drawKochCurve` is used to draw the Koch curve recursively. It takes the coordinates of two endpoints `(x1, y1)` and `(x2, y2)`, and the recursion depth `depth`.
+
+```cpp
+void display() {
+    // Function to display
+}
+```
+
+4. This function `display` is used to render the Koch curve on the screen. It clears the screen, sets the color to white, draws the Koch curve, and flushes the buffer to display it.
+
+```cpp
+void init() {
+    // Function to initialize OpenGL
+}
+```
+
+5. This function `init` is used to initialize OpenGL. It sets the clear color to black and defines the orthographic projection using `gluOrtho2D`.
+
+```cpp
+int main(int argc, char** argv) {
+    // Main function
+}
+```
+
+6. The `main` function initializes GLUT, creates the window, sets up the display function, and enters the GLUT event processing loop.
+
+```cpp
+glClearColor(0.0, 0.0, 0.0, 1.0);
+gluOrtho2D(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT);
+```
+
+7. These lines set the clear color to black and define the orthographic projection using `gluOrtho2D`.
+
+```cpp
+glClear(GL_COLOR_BUFFER_BIT);
+glColor3f(1.0, 1.0, 1.0);
+```
+
+8. These lines clear the color buffer and set the drawing color to white.
+
+```cpp
+glBegin(GL_LINES);
+drawKochCurve(100, 300, 700, 300, 4);
+glEnd();
+```
+
+9. These lines begin drawing line primitives and call the `drawKochCurve` function to draw the Koch curve with specified endpoints `(100, 300)` and `(700, 300)` and recursion depth of 4.
+
+```cpp
+glFlush();
+```
+
+10. This line flushes the buffer to display the rendered image on the screen.
+
+Overall, the code generates a Koch curve fractal using OpenGL. The `drawKochCurve` function recursively divides line segments and replaces them with segments of a specific shape, resulting in a fractal pattern resembling a snowflake. The `display` function is used to render the fractal on the screen, and the `init` function initializes the OpenGL environment.

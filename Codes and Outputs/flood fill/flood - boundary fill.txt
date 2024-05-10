@@ -1,0 +1,136 @@
+```cpp
+#include<windows.h>
+#include <GL/glut.h>
+#include<bits/stdc++.h>
+using namespace std;
+```
+- The code includes necessary header files for Windows API, OpenGL Utility Toolkit (GLUT), and the C++ standard library.
+
+```cpp
+#define PI 3.14
+vector<int> x;
+vector<int> y;
+int vertex;
+int radius = 50;
+int centreX = 200;
+int centreY = 200;
+```
+- Constants and variables are declared to define the properties of the regular polygon and the filling process.
+
+```cpp
+struct Color{
+    GLfloat red;
+    GLfloat green;
+    GLfloat blue;
+};
+Color fillColor = {1.0, 0.0, 0.0};
+Color backgroundColor = {0.0, 0.0, 0.0};
+Color insideColor = {1.0, 1.0, 1.0};
+```
+- Structures are defined to represent colors. `fillColor` represents the color used for flood filling, `backgroundColor` represents the background color, and `insideColor` represents the color to be filled inside the polygon.
+
+```cpp
+void generatePolygonPoints(){
+    for(int i=1; i<=vertex; i++){
+        int currx = (int)(centreX + radius * cos(((i-1)*2.0*PI)/vertex));
+        int curry = (int)(centreX + radius * sin(((i-1)*2.0*PI)/vertex));
+        x.push_back(currx);
+        y.push_back(curry);
+    }
+}
+```
+- This function generates the coordinates of the vertices of the regular polygon using trigonometric functions.
+
+```cpp
+void lineDraw(int a1, int b1, int a2, int b2){
+    glBegin(GL_LINES);
+    glVertex2i(a1, b1);
+    glVertex2i(a2, b2);
+    glEnd();
+}
+```
+- This function draws a line segment between two given points.
+
+```cpp
+void drawPolygon(){
+    for (int i=0; i<(vertex-1); i++)
+        lineDraw(x[i], y[i], x[i+1], y[i+1]);
+    lineDraw(x[vertex-1], y[vertex-1], x[0], y[0]);
+}
+```
+- This function draws the regular polygon using the generated vertex coordinates.
+
+```cpp
+int colorEqual(Color currentColor){
+    return (currentColor.green == backgroundColor.green && currentColor.blue ==
+            backgroundColor.blue && currentColor.red == backgroundColor.red);
+}
+```
+- This function checks if a given color is equal to the background color.
+
+```cpp
+Color getColorPixel(GLint pointX, GLint pointY){
+    Color pointColor;
+    glReadPixels(pointX, pointY, 1, 1, GL_RGB, GL_FLOAT, &pointColor);
+    return pointColor;
+}
+```
+- This function retrieves the color of a pixel at a given position.
+
+```cpp
+void fillColorPixel(GLint pointX, GLint pointY){
+    glColor3f(insideColor.red, insideColor.green, insideColor.blue);
+    glBegin(GL_POINTS);
+    glVertex2i(pointX, pointY);
+    glEnd();
+    glFlush();
+}
+```
+- This function fills a pixel with the specified color.
+
+```cpp
+void FloodFill(int currX, int currY){
+    Color currColor = getColorPixel(currX, currY);
+    if (!colorEqual(currColor))
+        return;
+    fillColorPixel(currX, currY);
+    FloodFill(currX + 1, currY);
+    FloodFill(currX, currY + 1);
+    FloodFill(currX - 1, currY);
+    FloodFill(currX, currY - 1);
+    return;
+}
+```
+- This function implements the flood fill algorithm recursively to fill the interior of the polygon.
+
+```cpp
+void disp(){
+    glColor3f(fillColor.red, fillColor.green, fillColor.blue);
+    drawPolygon();
+    FloodFill(centreX, centreY);
+    glFlush();
+}
+```
+- This function sets up the display and fills the polygon using the flood fill algorithm.
+
+```cpp
+int main(int argc, char **argv){
+    cout<<"Enter the number of vertices of the regular polygon.\n";
+    cin>>vertex;
+    generatePolygonPoints();
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
+    glutInitWindowSize(centreX*2, centreY*2);
+    glutInitWindowPosition(800, 50);
+    glutCreateWindow("Flood Fill Algorithm ");
+    glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    gluOrtho2D(0, centreX*2, 0, centreY*2);
+    glClearColor(backgroundColor.red, backgroundColor.green, backgroundColor.blue, 0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glutDisplayFunc(disp);
+    glutMainLoop();
+    return 0;
+}
+```
+- This is the main function where user input for the number of vertices of the regular polygon is taken, the polygon is generated, GLUT is initialized, the window is created, the display function is set, and the GLUT event loop is entered.

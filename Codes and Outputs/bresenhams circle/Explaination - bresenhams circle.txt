@@ -1,0 +1,125 @@
+Sure, let's go through the code step by step:
+
+```cpp
+#include<windows.h> // Header file for Windows API
+#include <iostream> // Header file for input/output streams
+#include <GL/glut.h> // Header file for OpenGL Utility Toolkit
+#include <GL/glu.h> // Header file for OpenGL Utility Library
+#include <cmath> // Header file for mathematical functions
+
+using namespace std;
+```
+
+1. `#include<windows.h>`: This includes the Windows header file, which is necessary for using Windows API functions.
+2. `#include<iostream>`: This includes the input/output stream header file, which is necessary for standard input/output operations.
+3. `#include<GL/glut.h>`: This includes the GLUT (OpenGL Utility Toolkit) header file, which provides a set of tools for managing windows, handling input, and rendering graphics.
+4. `#include<GL/glu.h>`: This includes the OpenGL Utility Library header file, which provides utilities for OpenGL applications.
+5. `#include<cmath>`: This includes the math header file, which provides mathematical functions like `sin`, `cos`, `sqrt`, etc.
+
+```cpp
+GLint xi, yi, r;
+```
+
+6. `GLint xi, yi, r;`: These are integer variables used to store the center coordinates `(xi, yi)` and the radius `r` of the circle.
+
+```cpp
+void setPixel(GLint x, GLint y) {
+    glBegin(GL_POINTS);
+    glVertex2i(x, y);
+    glEnd();
+}
+```
+
+7. `void setPixel(GLint x, GLint y)`: This is a function definition for setting a pixel at coordinates `(x, y)`.
+8. `glBegin(GL_POINTS);`: This begins drawing points.
+9. `glVertex2i(x, y);`: This specifies a vertex at coordinates `(x, y)`.
+10. `glEnd();`: This ends drawing points.
+
+This function is used to draw individual pixels on the screen.
+
+```cpp
+void drawCirclePoints(GLint x, GLint y) {
+    setPixel(xi + x, yi + y);
+    setPixel(xi - x, yi + y);
+    setPixel(xi + x, yi - y);
+    setPixel(xi - x, yi - y);
+    setPixel(xi + y, yi + x);
+    setPixel(xi - y, yi + x);
+    setPixel(xi + y, yi - x);
+    setPixel(xi - y, yi - x);
+}
+```
+
+11. `void drawCirclePoints(GLint x, GLint y)`: This function draws the points of the circle using symmetry. It calls the `setPixel` function to draw each point of the circle by exploiting its symmetry.
+
+```cpp
+void drawCircle() {
+    GLint x = 0;
+    GLint y = r;
+    GLint d = 3 - 2 * r;
+    drawCirclePoints(x, y);
+    while (y >= x) {
+        x++;
+        if (d > 0) {
+            y--;
+            d = d + 4 * (x - y) + 10;
+        } else {
+            d = d + 4 * x + 6;
+        }
+        drawCirclePoints(x, y);
+    }
+}
+```
+
+12. `void drawCircle()`: This function implements the Bresenham's circle drawing algorithm to draw the circle.
+13. `GLint x = 0;`, `GLint y = r;`, `GLint d = 3 - 2 * r;`: These variables are used for calculating the points of the circle using Bresenham's algorithm.
+14. `drawCirclePoints(x, y);`: This function call draws the initial set of points of the circle.
+15. The `while` loop iterates until the value of `y` becomes less than `x`, ensuring that all points of the circle are drawn.
+16. In each iteration of the loop, the decision parameter `d` is updated based on Bresenham's circle drawing algorithm, and the points of the circle are drawn using `drawCirclePoints(x, y)`.
+
+```cpp
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
+    glColor3f(1.0, 0.0, 0.0); // Red color
+    drawCircle();
+    glFlush();
+}
+```
+
+17. `void display()`: This function is the display callback function registered with GLUT. It clears the color buffer, sets the color to red, and calls the `drawCircle` function to draw the circle.
+
+```cpp
+void initialize() {
+    glClearColor(1.0, 1.0, 1.0, 1.0); // Set background color to white
+    gluOrtho2D(0, 800, 0, 600); // Set the coordinate system
+}
+```
+
+18. `void initialize()`: This function initializes OpenGL settings.
+19. `glClearColor(1.0, 1.0, 1.0, 1.0);`: This sets the background color to white.
+20. `gluOrtho2D(0, 800, 0, 600);`: This sets the coordinate system to cover an area from `(0, 0)` to `(800, 600)`.
+
+```cpp
+int main(int argc, char** argv) {
+    cout << "Enter the center coordinates (x, y): ";
+    cin >> xi >> yi;
+    cout << "Enter the radius of the circle: ";
+    cin >> r;
+
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(800, 600); // Set the window size
+    glutInitWindowPosition(100, 100); // Set the window position
+    glutCreateWindow("Bresenham Circle Drawing");
+
+    initialize();
+    glutDisplayFunc(display); // Register display callback function
+
+    glutMainLoop(); // Enter the event-processing loop
+
+    return 0;
+}
+```
+
+21. `int main(int argc, char** argv)`: This is the main function where the execution of the program starts.
+22. The user is prompted to enter

@@ -1,0 +1,100 @@
+Let's break down the provided code:
+
+```cpp
+#include<windows.h>
+#include<bits/stdc++.h>
+#include<windows.h>
+#include <stdio.h>
+#include<iostream>
+#include<GL/glut.h>
+#include<math.h>
+```
+
+1. These lines include necessary header files for Windows API, OpenGL Utility Toolkit (GLUT), and standard input/output streams.
+
+```cpp
+class Point
+{
+public:
+    int x, y;
+    void setxy(int _x, int _y)
+    {
+        x = _x;
+        y = _y;
+    }
+};
+```
+
+2. This defines a `Point` class with `x` and `y` coordinates, and a method `setxy` to set the coordinates of a point.
+
+```cpp
+static int POINTSNUM = 0;
+static Point points[4];
+```
+
+3. These lines declare a static integer `POINTSNUM` to keep track of the number of points clicked by the user, and an array `points` to store the clicked points.
+
+```cpp
+void init(void)
+{
+    // Initialization function to set OpenGL parameters
+}
+```
+
+4. The `init` function initializes the OpenGL environment, setting the background color to black, the drawing color to white, and the point size to 4.0.
+
+```cpp
+void setPoint(Point p)
+{
+    // Function to draw a point at the given coordinates
+}
+```
+
+5. The `setPoint` function draws a point at the specified coordinates `p`.
+
+```cpp
+void setline(Point p1, Point p2)
+{
+    // Function to draw a line between two points
+}
+```
+
+6. The `setline` function draws a line between the specified points `p1` and `p2`.
+
+```cpp
+Point setBezier(Point p1, Point p2, Point p3, Point p4, double t)
+{
+    // Function to compute a point on the Bezier curve
+}
+```
+
+7. The `setBezier` function computes a point on the Bezier curve given four control points `p1`, `p2`, `p3`, and `p4`, and a parameter `t` in the range [0, 1].
+
+```cpp
+void display()
+{
+    // Display function
+}
+```
+
+8. The `display` function is currently empty. It can be used to render graphics on the screen.
+
+```cpp
+void mymouseFunction(int button, int state, int x, int y)
+{
+    // Mouse event handler function
+}
+```
+
+9. The `mymouseFunction` function handles mouse events, specifically the left button click. It records the clicked points and draws the Bezier curve when four points are clicked.
+
+```cpp
+int main(int argc, char *argv[])
+{
+    // Main function
+}
+```
+
+10. The `main` function initializes GLUT, creates the window, sets up callbacks for mouse events, and enters the GLUT event processing loop.
+
+The code allows the user to click on the window to define control points for a Bezier curve. When four points are clicked, it draws the Bezier curve passing through those points.
